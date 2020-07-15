@@ -59,7 +59,6 @@ for matrix_element in iterator:
             else:
                 max_start_coordinates = starting_index
             max_navigation_direction = navigation_direction
-            #if navigation_direction == "up and right": max_array_flipped = 1
 
 if maxProduct == 0:
     print(f"Maximum product = 0 since the matrix has no 5-item array with no zeros in it in any of the directions")
