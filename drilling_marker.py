@@ -87,7 +87,7 @@ if horizontal_prompt in yes:
 
             with open('instruction.txt', 'a') as file:
                 for coord_line in horizontal_array:
-                    file.write(f"*****\rM6T{int(coord_line[4])}\rG43\rM3 S6000\r"
+                    file.write(f"\rM6T{int(coord_line[4])}\rG43\rM3 S6000\r"
                                f"\rG0 X{coord_line[0]:.4f} Y{coord_line[1]:.4f} Z30.0000\r"
                                f"Z{coord_line[2]:.4f}\r")
 
