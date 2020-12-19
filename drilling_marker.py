@@ -33,7 +33,7 @@ Esc - закончить и сформировать инструкцию
 vertical_array.append([float(item) for item in input('Введите переменные > ').split()])
 
 with open('instruction.txt', 'w') as file:
-    file.write("\r")
+    file.write(f"G21 G49 G80 G90 G91.1\r")
 
 while True:
 
@@ -47,7 +47,7 @@ while True:
 
         with open('instruction.txt', 'a') as file:
             for coord_line in vertical_array:
-                file.write(f"M6T{int(coord_line[3])}\rG43\rM3 S6000\r"
+                file.write(f"\rM6T{int(coord_line[3])}\rG43\rM3 S6000\r"
                            f"\rG0 X{coord_line[0]:.4f} Y{coord_line[1]:.4f} Z30.0000\r"
                            f"  Z18.0000\r"
                            f"G1 Z0.0000 F240\r"
@@ -100,8 +100,38 @@ if horizontal_prompt in yes:
                         file.write(f"Y{ex:.4f} F240\r"
                                    f"Y{detail_measures[0][1]:.4f}\r")
 
-                    file.write(f"Z30.0000\r")
+                    file.write(f"Z30.0000\r"
+                               f"G0Z50.0000\r"
+                               f"G0X0.0000Y{detail_measures[0][1]:.4f}\r"
+                               f"M5\r"
+                               f"M30\r")
 
             break
 
 print('\rГотово.')
+
+# TODO
+"""
+1) json collection for the tool
+   номер  диаметр   тип   скорость вращ      подача
+
+недоступно для оператора
+
+2) отдельный инпут для каждого значения размеров детали с возможностью корректировки
+
+3) вертикальное отверстие - то же самое
+
+4) перевести инпут для отверстий в эксель
+
+5) привязать интерфейс ко всему этому чтобы висели координаты видимые
+
+6) сделать так, чтобы спрашивал, куда сохранять и с каким именем
+
+мелочевка : 
+
+сгруппировать по номеру инструмента, чтобы не менялись на ходу. 
+
+exception handling for detail dimensions
+
+
+"""
