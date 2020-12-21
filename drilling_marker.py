@@ -88,7 +88,7 @@ if horizontal_prompt in yes:
             with open('instruction.txt', 'a') as file:
                 for coord_line in horizontal_array:
                     file.write(f"\rM6T{int(coord_line[4])}\rG43\rM3 S6000\r"
-                               f"\rG0 X{coord_line[0]:.4f} Y{coord_line[1]:.4f} Z30.0000\r"
+                               f"\rG0 X{coord_line[0]:.4f} Y{coord_line[1]:.4f} Z30.0000\r"    # TODO ДОБАВИТЬ - + 100мм для размера головы инструмента
                                f"Z{coord_line[2]:.4f}\r")
 
                     if coord_line[-1] == 1:
@@ -112,10 +112,14 @@ print('\rГотово.')
 
 # TODO
 """
+0) не работает, если отказываемся от горизонтального сверления
+
 1) json collection for the tool
    номер  диаметр   тип   скорость вращ      подача
 
 недоступно для оператора
+
+1.1) добавить длину инструмента 100мм 
 
 2) отдельный инпут для каждого значения размеров детали с возможностью корректировки
 
