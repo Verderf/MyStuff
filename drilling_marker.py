@@ -12,13 +12,13 @@ import msvcrt
 #         print("""Скрипт не может установить пакет. Откройте командную строку, выполните следующее :
 #                 pip install pynput """)
 
-detail_measures = []
+detail_measurments = []
 vertical_array = []
 horizontal_array = []
 
-detail_measures.append([float(item) for item in input('Введите размер детали X Y Z через пробел > ').split()])
+detail_measurments.append([float(item) for item in input('Введите размер детали X Y Z через пробел > ').split()])
 
-print(detail_measures)
+print(detail_measurments)
 
 print("""\rВЕРТИКАЛЬНОЕ СВЕРЛЕНИЕ.
 Введите координаты точки через пробел. (x   y   l   T)
@@ -42,8 +42,17 @@ while True:
 
     if ord(key_press) == 13:
         vertical_array.append([float(item) for item in input('Переменные > ').split()])
+
     elif ord(key_press) == 27:
-        print(f'Создаем инструкцию.. \r{vertical_array}')
+
+        for array_item in vertical_array:
+            if len(array_item) != 4:                # TODO : out-of-boundary exceptions
+                print(f'Некорректно введеные координаты будут игнорироваться: {array_item}')
+                vertical_array.remove(array_item)
+
+        print('Координаты вертикального сверления :')
+        for i in vertical_array:
+            print(f'{i}\r')
 
         with open('instruction.txt', 'a') as file:
             for coord_line in vertical_array:
@@ -57,9 +66,9 @@ while True:
 
 # APPENDING HORIZONTAL DRILLING INSTRUCTIONS IF NEEDED
 
-yes = ['yes', 'ye', 'y', 'д', 'да']
+yes = ['да', 'д']
 
-horizontal_prompt = input('Добавить горизонтальное сверление?  д/н  y/n ')
+horizontal_prompt = input('Добавить горизонтальное сверление? д/н ')
 
 if horizontal_prompt in yes:
 
@@ -83,7 +92,15 @@ if horizontal_prompt in yes:
         if ord(key_press) == 13:
             horizontal_array.append([float(item) for item in input('Переменные > ').split()])
         elif ord(key_press) == 27:
-            print(f'Создаем инструкцию.. \r{vertical_array}')
+
+            for array_item in horizontal_array:
+                if len(array_item) != 6:
+                    print(f'Некорректно введеные координаты будут игнорироваться: {array_item}')
+                    horizontal_array.remove(array_item)
+
+            print('Координаты горизонтального сверления :')
+            for i in horizontal_array:
+                print(f'{i}\r')
 
             with open('instruction.txt', 'a') as file:
                 for coord_line in horizontal_array:
@@ -95,10 +112,10 @@ if horizontal_prompt in yes:
                         ex = 0 + coord_line[3]
                         file.write(f"Y{ex:.4f} F240\r"
                                    f"Y0.0000\r")
-                    else:                                                                   # TODO: do the exceptions on third side
-                        ex = detail_measures[0][1] - coord_line[3]
+                    else:                                                       # TODO: do the exceptions on third side
+                        ex = detail_measurments[0][1] - coord_line[3]
                         file.write(f"Y{ex:.4f} F240\r"
-                                   f"Y{detail_measures[0][1]:.4f}\r")
+                                   f"Y{detail_measurments[0][1]:.4f}\r")
 
                     file.write(f"Z30.0000\r"
                                f"G0Z50.0000\r"
